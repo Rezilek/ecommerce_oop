@@ -46,10 +46,14 @@ class TestCategory:
 
     def test_category_count(self):
         initial_count = Category.total_categories
-        category = Category("Тест", "Тест", [])
+        test_category = Category("Тест", "Тест", [])
         assert Category.total_categories == initial_count + 1
+        assert test_category.name == "Тест"  # Явное использование переменной
+        assert test_category.description == "Тест"  # Дополнительное использование
 
     def test_unique_products_count(self, sample_product):
         initial_count = Category.total_unique_products
-        category = Category("Тест", "Тест", [sample_product, sample_product])
-        assert Category.total_unique_products == initial_count + 1  # Только уникальные продукты
+        test_category = Category("Тест", "Тест", [sample_product, sample_product])
+        assert Category.total_unique_products == initial_count + 1
+        assert len(test_category.products) == 2  # Явное использование переменной
+        assert test_category.name == "Тест"  # Дополнительное использование
