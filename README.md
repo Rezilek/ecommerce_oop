@@ -15,6 +15,29 @@
    poetry install
    ```
 
+## Основные возможности
+
+### Модели данных
+
+- **Товары (Product)**:
+  - Приватный атрибут цены с валидацией
+  - Автоматическая конвертация цен в float
+  - Защита от отрицательных цен
+  - Класс-метод для создания из словаря
+
+- **Категории (Category)**:
+  - Приватный список товаров
+  - Подсчет уникальных товаров
+  - Расчет средней цены
+  - Автоматическое ведение статистики
+
+### Особенности реализации
+
+- Полная типизация (mypy)
+- Защищенные атрибуты
+- Геттеры/сеттеры для контроля данных
+- Поддержка JSON-импорта
+
 ## Использование
 
 Основные модули:
@@ -26,14 +49,25 @@
 Пример использования:
 
 ```python
-from src.models import Product, Category, load_categories_from_json
+from src.models import Product, Category
 
-# Создание объектов
-product = Product("Телевизор", "4K UHD", 50000.0, 10)
-category = Category("Электроника", "Техника", [product])
+# Создание продукта
+product = Product("Смартфон", "Android 13", 29999.0, 15)
 
-# Загрузка данных
-categories = load_categories_from_json("data/products.json")
+# Установка цены с валидацией
+try:
+    product.price = -1000  # Вызовет ValueError
+except ValueError as e:
+    print(e)
+
+# Создание категории
+electronics = Category("Электроника", "Гаджеты и устройства")
+
+# Добавление товара
+electronics.add_product(product)
+
+# Получение списка товаров
+print(electronics.products)
 ```
 
 ## Тестирование
@@ -47,6 +81,8 @@ poetry run pytest --cov=src --cov-report=html
 
 # Проверка стиля кода
 poetry run flake8 src tests
+
+# Проверка типов
 poetry run mypy src tests
 ```
 
@@ -54,16 +90,40 @@ poetry run mypy src tests
 
 ```
 ecommerce_oop/
-├── src/               # Исходный код
-├── tests/             # Тесты
-├── data/              # Данные
-├── pyproject.toml     # Конфигурация Poetry
-└── README.md          # Документация
+├── src/
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── product.py       # Класс Product
+│   │   ├── category.py      # Класс Category
+│   │   └── data_loader.py   # Загрузка данных
+│   └── utils/
+│       ├── __init__.py
+│       └── validators.py    # Валидаторы данных
+├── tests/
+│   ├── unit/                # Модульные тесты
+│   └── integration/         # Интеграционные тесты
+├── data/                    # Примеры данных
+├── pyproject.toml           # Конфигурация Poetry
+└── README.md                # Документация
 ```
-````
 
 Эта структура проекта обеспечивает:
 - Четкое разделение на модули
 - Полное покрытие тестами
 - Возможность легкого расширения функционала
 - Простоту использования и интеграции
+
+## Требования
+
+- Python 3.8+
+- Poetry для управления зависимостями
+
+## Лицензия
+
+MIT License
+
+## Контакты
+
+**Автор:** Резиля Столярова
+**Email:** rezilek5177@gmail.com
+**GitHub:** [Rezilek](https://github.com/Rezilek)
