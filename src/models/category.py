@@ -1,6 +1,22 @@
-from typing import List, Set
+from typing import List, Set, Optional
 
 from src.models.product import Product
+
+
+class CategoryIterator:
+    def __init__(self, products):
+        self.products = products
+        self.index = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.index < len(self.products):
+            product = self.products[self.index]
+            self.index += 1
+            return product
+        raise StopIteration
 
 
 class Category:
@@ -10,9 +26,11 @@ class Category:
 
     total_categories: int = 0
     total_unique_products: int = 0
-    _existing_products: Set[int] = set()
+    _existing_products: Set = set()
 
-    def __init__(self, name: str, description: str, products: List[Product] = None):
+    def __init__(
+        self, name: str, description: str, products: Optional[List[Product]] = None
+    ):
         """
         Инициализирует экземпляр класса Category.
 
@@ -28,7 +46,9 @@ class Category:
 
         # Добавляем только новые уникальные продукты
         for product in self.__products:
-            self._add_to_unique_products(product)
+            if id(product) not in Category._existing_products:
+                Category._existing_products.add(id(product))
+                Category.total_unique_products += 1
 
     @classmethod
     def reset_counters(cls):
@@ -51,9 +71,6 @@ class Category:
             f"{p.name}, {p.price} руб. Остаток: {p.quantity} шт."
             for p in self.__products
         )
-
-    def __str__(self) -> str:
-        return f"{self.name}, количество продуктов: {len(self)} шт."
 
     def __len__(self) -> int:
         return len(self.__products)
@@ -80,3 +97,10 @@ class Category:
     def products_list(self) -> List[Product]:
         """Альтернативный геттер для получения списка продуктов"""
         return self.__products
+
+    def __str__(self) -> str:
+        total_quantity = sum(product.quantity for product in self.__products)
+        return f"{self.name}, количество продуктов: {total_quantity} шт."
+
+    def __iter__(self):
+        return CategoryIterator(self.__products)

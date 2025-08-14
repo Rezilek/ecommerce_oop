@@ -3,6 +3,9 @@ class Product:
 
 
 class Category:
+    def __init__(self):
+        self.products = None
+
     pass
 
 
