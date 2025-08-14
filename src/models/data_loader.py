@@ -1,8 +1,9 @@
 import json
 from pathlib import Path
 from typing import List
-from src.models.product import Product
+
 from src.models.category import Category
+from src.models.product import Product
 
 
 def load_categories_from_json(file_path: str) -> List[Category]:
@@ -15,7 +16,7 @@ def load_categories_from_json(file_path: str) -> List[Category]:
     :raises json.JSONDecodeError: Если файл содержит некорректный JSON
     """
     try:
-        with open(file_path, 'r', encoding='utf-8') as file:
+        with open(file_path, "r", encoding="utf-8") as file:
             data = json.load(file)
     except FileNotFoundError:
         raise FileNotFoundError(f"Файл {file_path} не найден")
@@ -25,19 +26,19 @@ def load_categories_from_json(file_path: str) -> List[Category]:
     categories = []
     for category_data in data:
         products = []
-        for product_data in category_data['products']:
+        for product_data in category_data["products"]:
             product = Product(
-                name=product_data['name'],
-                description=product_data['description'],
-                price=float(product_data['price']),
-                quantity=int(product_data['quantity'])
+                name=product_data["name"],
+                description=product_data["description"],
+                price=float(product_data["price"]),
+                quantity=int(product_data["quantity"]),
             )
             products.append(product)
 
         category = Category(
-            name=category_data['name'],
-            description=category_data['description'],
-            products=products
+            name=category_data["name"],
+            description=category_data["description"],
+            products=products,
         )
         categories.append(category)
 
