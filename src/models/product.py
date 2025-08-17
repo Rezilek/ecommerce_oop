@@ -1,3 +1,5 @@
+from typing import Any
+
 from src.utils.validators import validate_price, validate_quantity
 
 
@@ -11,7 +13,9 @@ class Product:
         quantity (int): Количество товара (не может быть отрицательным)
     """
 
-    def __init__(self, name: str, description: str, price: float, quantity: int):
+    def __init__(
+        self, name: str, description: str, price: float, quantity: int
+    ) -> None:
         """Инициализирует экземпляр класса Product.
 
         Args:
@@ -38,7 +42,7 @@ class Product:
         return self.__price
 
     @price.setter
-    def price(self, value: float):
+    def price(self, value: float) -> None:
         """Устанавливает цену товара с проверкой.
 
         Args:
@@ -59,7 +63,7 @@ class Product:
         return self.__quantity
 
     @quantity.setter
-    def quantity(self, value: int):
+    def quantity(self, value: int) -> None:
         """Устанавливает количество товара с проверкой.
 
         Args:
@@ -78,7 +82,7 @@ class Product:
         """
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
-    def __add__(self, other: "Product") -> float:
+    def __add__(self, other: Any) -> float:
         """Складывает товары (сумма цен * количества).
 
         Args:
@@ -88,8 +92,84 @@ class Product:
             float: Общая стоимость товаров
 
         Raises:
-            TypeError: Если other не является Product
+            TypeError: Если other не является Product или классы товаров разные
         """
-        if not isinstance(other, Product):
-            raise TypeError("Можно складывать только объекты класса Product")
+        if not isinstance(other, type(self)):
+            raise TypeError("Можно складывать только товары одного класса")
         return (self.price * self.quantity) + (other.price * other.quantity)
+
+
+class Smartphone(Product):
+    """Класс для представления смартфона в магазине (наследуется от Product).
+
+    Дополнительные атрибуты:
+        efficiency (float): Производительность (в условных единицах)
+        model (str): Модель смартфона
+        memory (int): Объем встроенной памяти (в ГБ)
+        color (str): Цвет смартфона
+    """
+
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        efficiency: float,
+        model: str,
+        memory: int,
+        color: str,
+    ) -> None:
+        """Инициализирует экземпляр класса Smartphone.
+
+        Args:
+            name: Название смартфона
+            description: Описание смартфона
+            price: Цена смартфона
+            quantity: Количество смартфонов
+            efficiency: Производительность
+            model: Модель смартфона
+            memory: Объем памяти (ГБ)
+            color: Цвет смартфона
+        """
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+
+class LawnGrass(Product):
+    """Класс для представления газонной травы в магазине (наследуется от Product).
+
+    Дополнительные атрибуты:
+        country (str): Страна-производитель
+        germination_period (str): Срок прорастания
+        color (str): Цвет травы
+    """
+
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        country: str,
+        germination_period: str,
+        color: str,
+    ) -> None:
+        """Инициализирует экземпляр класса LawnGrass.
+
+        Args:
+            name: Название травы
+            description: Описание травы
+            price: Цена травы
+            quantity: Количество травы
+            country: Страна-производитель
+            germination_period: Срок прорастания
+            color: Цвет травы
+        """
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color

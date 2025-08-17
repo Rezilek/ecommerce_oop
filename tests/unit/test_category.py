@@ -1,6 +1,7 @@
 import pytest
-from src.models.product import Product
+
 from src.models.category import Category
+from src.models.product import LawnGrass, Product, Smartphone
 
 
 @pytest.fixture
@@ -68,3 +69,27 @@ def test_category_iterator(sample_category):
     products = [p for p in sample_category]
     assert len(products) == 1
     assert products[0].name == "Телевизор"
+
+
+def test_add_inherited_products():
+    """Тест добавления товаров-наследников в категорию."""
+    category = Category("Test", "Test")
+
+    phone = Smartphone("Phone", "Desc", 1000, 2, 90, "X", 128, "Black")
+    grass = LawnGrass("Grass", "Desc", 500, 5, "RU", "10d", "Green")
+
+    category.add_product(phone)
+    category.add_product(grass)
+
+    assert len(category) == 2
+
+
+def test_add_non_product_to_category():
+    """Тест попытки добавления не-продукта в категорию."""
+    category = Category("Test", "Test")
+
+    with pytest.raises(TypeError):
+        category.add_product("not a product")
+
+    with pytest.raises(TypeError):
+        category.add_product(123)
