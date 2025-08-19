@@ -112,7 +112,8 @@ ecommerce_oop/
 ├── src/
 │   ├── models/
 │   │   ├── __init__.py
-│   │   ├── product.py       # Класс Product
+│   │   ├── base.py          # Базовый класс моделей
+│   │   ├── product.py       # Классы Product, Smartphone, LawnGrass
 │   │   ├── category.py      # Класс Category
 │   │   └── data_loader.py   # Загрузка данных
 │   └── utils/
@@ -122,8 +123,10 @@ ecommerce_oop/
 │   ├── unit/                # Модульные тесты
 │   └── integration/         # Интеграционные тесты
 ├── data/                    # Примеры данных
+├── .gitignore
 ├── pyproject.toml           # Конфигурация Poetry
 └── README.md                # Документация
+└── requirements.txt
 ```
 
 ### 🔍 Особенности реализации
