@@ -1,6 +1,6 @@
-from typing import List, Set, Optional
+from typing import List, Optional, Set, Union
 
-from src.models.product import Product
+from src.models.product import LawnGrass, Product, Smartphone
 
 
 class CategoryIterator:
@@ -75,16 +75,6 @@ class Category:
     def __len__(self) -> int:
         return len(self.__products)
 
-    def add_product(self, product: Product):
-        """Добавляет продукт в категорию."""
-        if not isinstance(product, Product):
-            raise TypeError(
-                "Можно добавлять только объекты класса Product или его наследников"
-            )
-
-        self._add_to_unique_products(product)
-        self.__products.append(product)
-
     @property
     def average_price(self) -> float:
         """Рассчитывает среднюю цену продуктов в категории."""
@@ -104,3 +94,26 @@ class Category:
 
     def __iter__(self):
         return CategoryIterator(self.__products)
+
+    def add_product(self, product: Union[Product, Smartphone, LawnGrass]) -> None:
+        """Добавляет продукт в категорию.
+
+        Args:
+            product: Продукт для добавления (Product или его наследники)
+
+        Raises:
+            TypeError: Если переданный объект не является продуктом
+        """
+        if not isinstance(product, (Product, Smartphone, LawnGrass)):
+            raise TypeError(
+                "Можно добавлять только объекты класса Product или его наследников"
+            )
+
+        # Проверка через issubclass (альтернативный вариант)
+        if not issubclass(type(product), Product):
+            raise TypeError(
+                "Можно добавлять только объекты класса Product или его наследников"
+            )
+
+        self._add_to_unique_products(product)
+        self.__products.append(product)

@@ -1,6 +1,8 @@
-import pytest
 from contextlib import nullcontext as does_not_raise
-from src.models.product import Product
+
+import pytest
+
+from src.models.product import LawnGrass, Product, Smartphone
 
 
 @pytest.fixture
@@ -70,3 +72,47 @@ def test_product_add(sample_product):
     other_product = Product("Ноутбук", "Игровой", 80000.0, 5)
     total = sample_product + other_product
     assert total == 50000.0 * 10 + 80000.0 * 5
+
+
+def test_smartphone_initialization():
+    """Тест инициализации смартфона."""
+    phone = Smartphone("iPhone", "Смартфон", 100000, 5, 95.5, "15 Pro", 512, "Black")
+    assert phone.name == "iPhone"
+    assert phone.efficiency == 95.5
+    assert phone.model == "15 Pro"
+    assert phone.memory == 512
+    assert phone.color == "Black"
+
+
+def test_lawn_grass_initialization():
+    """Тест инициализации газонной травы."""
+    grass = LawnGrass(
+        "Трава", "Газонная трава", 500, 10, "Россия", "14 дней", "Зеленая"
+    )
+    assert grass.name == "Трава"
+    assert grass.country == "Россия"
+    assert grass.germination_period == "14 дней"
+    assert grass.color == "Зеленая"
+
+
+def test_add_same_class_products():
+    """Тест сложения товаров одного класса."""
+    phone1 = Smartphone("Phone1", "Desc", 1000, 2, 90, "X", 128, "Black")
+    phone2 = Smartphone("Phone2", "Desc", 2000, 3, 95, "Y", 256, "White")
+    assert phone1 + phone2 == 1000 * 2 + 2000 * 3
+
+    grass1 = LawnGrass("Grass1", "Desc", 500, 5, "RU", "10d", "Green")
+    grass2 = LawnGrass("Grass2", "Desc", 700, 3, "US", "7d", "Blue")
+    assert grass1 + grass2 == 500 * 5 + 700 * 3
+
+
+def test_add_different_class_products():
+    """Тест попытки сложения товаров разных классов."""
+    phone = Smartphone("Phone", "Desc", 1000, 2, 90, "X", 128, "Black")
+    grass = LawnGrass("Grass", "Desc", 500, 5, "RU", "10d", "Green")
+
+    with pytest.raises(TypeError):
+        phone + grass
+
+    with pytest.raises(TypeError):
+        grass + phone

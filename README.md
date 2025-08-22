@@ -30,6 +30,18 @@
   - `__str__`: "Название, цена руб. Остаток: количество шт."
   - `__add__`: сумма произведений цены на количество
 
+#### **Smartphone (Смартфон)** - наследник Product с дополнительными полями:
+   - Производительность (efficiency)
+   - Модель (model)
+   - Объем памяти (memory)
+   - Цвет (color)
+
+#### **LawnGrass (Газонная трава)** - наследник Product с дополнительными полями:
+   - Страна-производитель (country)
+   - Срок прорастания (germination_period)
+   - Цвет (color)
+
+
 #### **`Category`** - класс категории товаров
 - Подсчет общего количества товаров
 - Итерация по товарам
@@ -100,7 +112,8 @@ ecommerce_oop/
 ├── src/
 │   ├── models/
 │   │   ├── __init__.py
-│   │   ├── product.py       # Класс Product
+│   │   ├── base.py          # Базовый класс моделей
+│   │   ├── product.py       # Классы Product, Smartphone, LawnGrass
 │   │   ├── category.py      # Класс Category
 │   │   └── data_loader.py   # Загрузка данных
 │   └── utils/
@@ -110,8 +123,10 @@ ecommerce_oop/
 │   ├── unit/                # Модульные тесты
 │   └── integration/         # Интеграционные тесты
 ├── data/                    # Примеры данных
+├── .gitignore
 ├── pyproject.toml           # Конфигурация Poetry
 └── README.md                # Документация
+└── requirements.txt
 ```
 
 ### 🔍 Особенности реализации
