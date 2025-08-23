@@ -1,5 +1,6 @@
 class Product:
-    pass
+    def base_product(self):
+        return None
 
 
 class Category:
@@ -10,4 +11,8 @@ class Category:
 
 
 def load_categories_from_json():
+    return None
+
+
+def base_product():
     return None
