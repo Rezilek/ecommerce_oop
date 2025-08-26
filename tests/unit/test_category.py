@@ -93,3 +93,28 @@ def test_add_non_product_to_category():
 
     with pytest.raises(TypeError):
         category.add_product(123)
+
+
+def test_middle_price_with_products(sample_category, sample_product):
+    """Тест расчета средней цены с товарами."""
+    # sample_category уже имеет один товар с ценой 50000
+    assert sample_category.middle_price() == 50000.0
+
+    # Добавляем второй товар
+    new_product = Product("Ноутбук", "Игровой", 80000.0, 5)
+    sample_category.add_product(new_product)
+    assert sample_category.middle_price() == 65000.0  # (50000 + 80000) / 2
+
+
+def test_middle_price_empty_category():
+    """Тест расчета средней цены для пустой категории."""
+    empty_category = Category("Пустая", "Пустая категория", [])
+    assert empty_category.middle_price() == 0.0
+
+
+def test_middle_price_single_product():
+    """Тест расчета средней цены для одного товара."""
+    category = Category("Тест", "Тест", [])
+    product = Product("Тест", "Тест", 100.0, 1)
+    category.add_product(product)
+    assert category.middle_price() == 100.0

@@ -117,3 +117,15 @@ class Category:
 
         self._add_to_unique_products(product)
         self.__products.append(product)
+
+    def middle_price(self) -> float:
+        """Подсчитывает средний ценник всех товаров в категории.
+
+        Returns:
+            float: Средняя цена товаров или 0 если товаров нет
+        """
+        try:
+            total_price = sum(product.price for product in self.__products)
+            return total_price / len(self.__products)
+        except ZeroDivisionError:
+            return 0.0
