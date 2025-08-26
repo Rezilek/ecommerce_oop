@@ -121,13 +121,17 @@ def test_add_different_class_products():
 
 def test_product_with_zero_quantity():
     """Тест создания товара с нулевым количеством."""
-    with pytest.raises(ValueError, match="Товар с нулевым количеством не может быть добавлен"):
+    with pytest.raises(
+        ValueError, match="Товар с нулевым количеством не может быть добавлен"
+    ):
         Product("Test", "Description", 100.0, 0)
 
 
 def test_validate_quantity_zero():
     """Тест валидации нулевого количества."""
-    with pytest.raises(ValueError, match="Товар с нулевым количеством не может быть добавлен"):
+    with pytest.raises(
+        ValueError, match="Товар с нулевым количеством не может быть добавлен"
+    ):
         validate_quantity(0)
 
 
