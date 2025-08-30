@@ -3,6 +3,7 @@ from contextlib import nullcontext as does_not_raise
 import pytest
 
 from src.models.product import LawnGrass, Product, Smartphone
+from src.utils.validators import validate_quantity
 
 
 @pytest.fixture
@@ -116,3 +117,31 @@ def test_add_different_class_products():
 
     with pytest.raises(TypeError):
         grass + phone
+
+
+def test_product_with_zero_quantity():
+    """Тест создания товара с нулевым количеством."""
+    with pytest.raises(
+        ValueError, match="Товар с нулевым количеством не может быть добавлен"
+    ):
+        Product("Test", "Description", 100.0, 0)
+
+
+def test_validate_quantity_zero():
+    """Тест валидации нулевого количества."""
+    with pytest.raises(
+        ValueError, match="Товар с нулевым количеством не может быть добавлен"
+    ):
+        validate_quantity(0)
+
+
+def test_validate_quantity_negative():
+    """Тест валидации отрицательного количества."""
+    with pytest.raises(ValueError, match="Количество не может быть отрицательным"):
+        validate_quantity(-5)
+
+
+def test_validate_quantity_valid():
+    """Тест валидации корректного количества."""
+    assert validate_quantity(1) == 1
+    assert validate_quantity(100) == 100
